@@ -7,13 +7,6 @@ namespace MachineACafe.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View("Index");
@@ -36,7 +29,6 @@ namespace MachineACafe.Controllers
             {
                 ViewBag.Price = "";
                 ViewBag.Error = "Erreur: Boison non reconnue";
-                _logger.LogError("Error: {0} is not a valid drink", Request.Form["drink"]);
             }
 
             return View("Index");
