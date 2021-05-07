@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MachineACafe.Models
+﻿namespace MachineACafe.Models
 {
     public abstract class Drink
     {
@@ -18,13 +13,13 @@ namespace MachineACafe.Models
         protected double rawPrice; 
 
         //Get the final price
-        public double getPrice()
+        public double GetPrice()
         {
-            return rawPrice + addMargin(rawPrice);
+            return rawPrice + AddMargin(rawPrice);
         }
 
         //Calculate the 30% margin to the ingredients' price
-        protected double addMargin(double priceOfIngredients)
+        private double AddMargin(double priceOfIngredients)
         {
             return priceOfIngredients * 0.30;
         }

@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace MachineACafe.Controllers
 {
@@ -28,11 +23,29 @@ namespace MachineACafe.Controllers
         [HttpPost]
         public IActionResult Index(object sender, EventArgs e)
         {
-            Drink drink = null;
+            Drink drink;
+            
+            GetDrinkType(Request.Form["drink"], out drink);
 
-            ViewBag.Error = "";
+            if(drink != null)
+            {
+                ViewBag.Price = string.Format("{0:F2}", drink.GetPrice());
+                ViewBag.Error = "";
+            }
+            else
+            {
+                ViewBag.Price = "";
+                ViewBag.Error = "Erreur: Boison non reconnue";
+                _logger.LogError("Error: {0} is not a valid drink", Request.Form["drink"]);
+            }
 
-            switch (Request.Form["drink"]){
+            return View("Index");
+        }
+
+        private static void GetDrinkType(string drinkName, out Drink drink)
+        {
+            switch (drinkName)
+            {
                 case "Expresso":
                     drink = new Expresso();
                     break;
@@ -49,14 +62,9 @@ namespace MachineACafe.Controllers
                     drink = new The();
                     break;
                 default:
-                    ViewBag.Error = "Erreur: Boison non reconnue";
+                    drink = null;
                     break;
-
             }
-
-            ViewBag.Price = drink != null ? string.Format("{0:F2}",drink.getPrice()):"";
-
-            return View("Index");
         }
     }
 }
